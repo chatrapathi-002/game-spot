@@ -1,3 +1,4 @@
+import { Platform } from "../hooks/useGames";
 import {
   FaWindows,
   FaXbox,
@@ -9,15 +10,15 @@ import {
 import { MdPhoneIphone } from "react-icons/md";
 import { SiNintendo } from "react-icons/si";
 import { BsGlobe } from "react-icons/bs";
-import { Card, CardBody, Heading, Image, Text } from "@chakra-ui/react";
+import { Text, Icon, HStack } from "@chakra-ui/react";
 import { Game } from "../hooks/useGames";
-import PlatformIconList from "./PlatformIconList";
+import { IconType } from "react-icons/lib/esm/iconBase";
 
 interface Props {
-  game: Game;
+  platforms: Platform[];
 }
-const GameCard = ({ game }: Props) => {
-  const iconMap = {
+const PlatformIconList = ({ platforms }: Props) => {
+  const iconMap: { [key: string]: IconType } = {
     pc: FaWindows,
     playstation: FaPlaystation,
     xbox: FaXbox,
@@ -28,17 +29,14 @@ const GameCard = ({ game }: Props) => {
     ios: MdPhoneIphone,
     web: BsGlobe,
   };
+
   return (
-    <Card borderRadius={10} overflow="hidden">
-      <Image src={game.background_image} />
-      <CardBody>
-        <Heading fontSize="2xl">{game.name}</Heading>
-        <PlatformIconList
-          platforms={game.parent_platforms.map((p) => p.platform)}
-        />
-      </CardBody>
-    </Card>
+    <HStack marginY={1}>
+      {platforms.map((platform) => (
+        <Icon as={iconMap[platform.slug]} color="gray.500" />
+      ))}
+    </HStack>
   );
 };
 
-export default GameCard;
+export default PlatformIconList;
