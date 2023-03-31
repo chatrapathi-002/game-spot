@@ -13,6 +13,7 @@ export interface Game {
   name: string;
   background_image: string;
   parent_platforms: { platform: Platform }[];
+  metacritic: number;
 }
 
 interface FetchGamesResponse {
@@ -21,11 +22,11 @@ interface FetchGamesResponse {
 }
 
 const useGames = () => {
-  const controller = new AbortController();
   const [games, setGames] = useState<Game[]>([]);
   const [error, setError] = useState("");
 
   useEffect(() => {
+    const controller = new AbortController();
     apiClient
       .get<FetchGamesResponse>("/games", { signal: controller.signal })
       .then((res) => setGames(res.data.results))
